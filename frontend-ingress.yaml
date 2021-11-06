@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: frontend-ingress
+spec:
+  tls:
+    - hosts:
+        - frontend.byeol.my.id
+      secretName: skripsi-tls
+  rules:
+    - host: frontend.byeol.my.id
+      http:
+        paths:
+          - backend:
+              serviceName: frontend-service
+              servicePort: 2222
