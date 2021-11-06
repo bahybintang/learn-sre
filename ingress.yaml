@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: skripsi-ingress
+  # To enable sticky client for websocket: Not working
+  # annotations:
+  #   nginx.ingress.kubernetes.io/affinity: "cookie"
+  #   nginx.ingress.kubernetes.io/session-cookie-name: "route"
+  #   nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
+  #   nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+  # annotations:
+  #   nginx.org/websocket-services: "backend-service"
+spec:
+  tls:
+    - hosts:
+        - backend.byeol.my.id
+        - frontend.byeol.my.id
+      secretName: skripsi-tls
+  rules:
+    - host: backend.byeol.my.id
+      http:
+        paths:
+          - backend:
+              serviceName: backend-service
+              servicePort: 1111
+    - host: frontend.byeol.my.id
+      http:
+        paths:
+          - backend:
+              serviceName: frontend-service
+              servicePort: 2222
