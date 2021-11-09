@@ -32,7 +32,7 @@ resource "digitalocean_droplet" "build_server" {
       "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl\"",
       "chmod +x kubectl",
       "mv kubectl /usr/local/bin",
-      "su - jenkins \"docker login -u ${var.DOCKER_USERNAME} -p ${var.DOCKER_PASSWORD}\"",
+      "su - jenkins -c \"docker login -u ${var.DOCKER_USERNAME} -p ${var.DOCKER_PASSWORD}\"",
       "su - jenkins -c \"doctl auth init -t ${var.DO_TOKEN}\"",
       "su - jenkins -c \"doctl kubernetes cluster kubeconfig save skripsi-cluster\"",
       "sudo systemctl restart jenkins",
