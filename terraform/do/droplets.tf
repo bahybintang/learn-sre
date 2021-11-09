@@ -35,7 +35,7 @@ resource "digitalocean_droplet" "build_server" {
       "su - jenkins \"docker login -u ${var.DOCKER_USERNAME} -p ${var.DOCKER_PASSWORD}\"",
       "su - jenkins -c \"doctl auth init -t ${var.DO_TOKEN}\"",
       "su - jenkins -c \"doctl kubernetes cluster kubeconfig save skripsi-cluster\"",
-      "sudo systemctl start jenkins",
+      "sudo systemctl restart jenkins",
     ]
   }
 
