@@ -2,6 +2,14 @@ variable "DO_TOKEN" {
   type = string
 }
 
+variable "DOCKER_USERNAME" {
+  type = string
+}
+
+variable "DOCKER_PASSWORD" {
+  type = string
+}
+
 variable "REGION" {
   default = "sgp1"
 }
