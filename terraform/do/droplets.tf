@@ -14,8 +14,8 @@ resource "digitalocean_droplet" "build_server" {
 
   provisioner "remote-exec" {
     inline = [
-      "cp /tmp/apt-get /usr/local/sbin",
-      "chmod +x /usr/local/sbin/apt-get",
+      "sudo cp /tmp/apt-get /usr/local/sbin",
+      "sudo chmod +x /usr/local/sbin/apt-get",
       "wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -",
       "sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'",
       "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg",
@@ -27,11 +27,11 @@ resource "digitalocean_droplet" "build_server" {
       "sudo usermod -aG docker jenkins",
       "wget https://github.com/digitalocean/doctl/releases/download/v1.66.0/doctl-1.66.0-linux-amd64.tar.gz",
       "tar -xvzf doctl-1.66.0-linux-amd64.tar.gz",
-      "chmod +x doctl",
-      "mv doctl /usr/local/bin",
+      "sudo chmod +x doctl",
+      "sudo mv doctl /usr/local/bin",
       "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl\"",
-      "chmod +x kubectl",
-      "mv kubectl /usr/local/bin",
+      "sudo chmod +x kubectl",
+      "sudo mv kubectl /usr/local/bin",
       "su - jenkins -c \"docker login -u ${var.DOCKER_USERNAME} -p ${var.DOCKER_PASSWORD}\"",
       "su - jenkins -c \"doctl auth init -t ${var.DO_TOKEN}\"",
       "su - jenkins -c \"doctl kubernetes cluster kubeconfig save skripsi-cluster\"",

@@ -1,0 +1,5 @@
+creds.json
+terraform.tfvars
+.terraform
+terraform.tfstate.backup
+terraform.tfstate
