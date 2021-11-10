@@ -5,7 +5,6 @@ metadata:
   labels:
     app: backend
 spec:
-  replicas: 2
   selector:
     matchLabels:
       app: backend
@@ -30,3 +29,10 @@ spec:
               value: "rCs2RMxzYw9z5IMUwLpnjg"
             - name: REDIS_URL
               value: "redis://redis-service:3333"
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 300Mi
+            requests:
+              cpu: 300m
+              memory: 100Mi
