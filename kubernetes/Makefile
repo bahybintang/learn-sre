@@ -12,4 +12,4 @@ deploy:
 	kubectl apply -f redis-service.yaml
 	kubectl apply -f backend-ingress.yaml
 	kubectl apply -f frontend-ingress.yaml
-  kubectl apply -f backend-hpa.yaml
+	kubectl apply -f backend-hpa.yaml

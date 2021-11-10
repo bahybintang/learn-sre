@@ -9,6 +9,20 @@ resource "google_container_cluster" "skripsi_cluster" {
   initial_node_count       = 1
 
   network = resource.google_compute_network.skripsi_network.name
+
+  cluster_autoscaling {
+    enabled = true
+    resource_limits {
+      resource_type = "cpu"
+      minimum       = 2
+      maximum       = 10
+    }
+
+    resource_limits {
+      resource_type = "memory"
+      maximum       = 5
+    }
+  }
 }
 
 resource "google_container_node_pool" "skripsi_nodes" {
@@ -19,7 +33,7 @@ resource "google_container_node_pool" "skripsi_nodes" {
 
   autoscaling {
     min_node_count = 1
-    max_node_count = 3
+    max_node_count = 5
   }
 
   upgrade_settings {
@@ -29,6 +43,8 @@ resource "google_container_node_pool" "skripsi_nodes" {
 
   node_config {
     preemptible  = true
+
+    # 2 vCPU 1 GB RAM
     machine_type = "e2-micro"
   }
 }
