@@ -7,7 +7,7 @@ metadata:
 spec:
   tls:
     - hosts:
-        - frontend.byeol.my.id
+        - frontend.rootshell.my.id
       secretName: skripsi-tls
   rules:
     - host: frontend.byeol.my.id

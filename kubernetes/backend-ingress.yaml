@@ -14,10 +14,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - backend.byeol.my.id
+        - "*.backend.rootshell.my.id"
       secretName: skripsi-tls
   rules:
-    - host: backend.byeol.my.id
+    - host: "*.backend.rootshell.my.id"
       http:
         paths:
           - backend:
