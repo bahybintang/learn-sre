@@ -17,27 +17,31 @@ resource "google_compute_instance" "build_server" {
     }
   }
 
-  provisioner "file" {
-    source      = "../scripts/apt-get"
-    destination = "/tmp/apt-get"
+  metadata = {
+    user-data = data.template_cloudinit_config.build-config.rendered
   }
 
-  provisioner "file" {
-    source      = "../scripts/build-init.sh"
-    destination = "/tmp/build-init.sh"
-  }
+  # provisioner "file" {
+  #   source      = "../scripts/apt-get"
+  #   destination = "/tmp/apt-get"
+  # }
 
-  provisioner "remote-exec" {
-    inline = [
-      "bash /tmp/build-init.sh"
-    ]
-  }
+  # provisioner "file" {
+  #   source      = "../scripts/build-init.sh"
+  #   destination = "/tmp/build-init.sh"
+  # }
 
-  connection {
-    host        = self.network_interface.0.access_config.0.nat_ip
-    user        = "admin"
-    type        = "ssh"
-    private_key = file("../id_rsa")
-    timeout     = "2m"
-  }
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "bash /tmp/build-init.sh"
+  #   ]
+  # }
+
+  # connection {
+  #   host        = self.network_interface.0.access_config.0.nat_ip
+  #   user        = "admin"
+  #   type        = "ssh"
+  #   private_key = file("../id_rsa")
+  #   timeout     = "2m"
+  # }
 }

@@ -1,6 +1,6 @@
 creds.json
 terraform.tfvars
 .terraform
-terraform.tfstate.backup
+*.backup
 terraform.tfstate
 .terraform.tfstate.lock.info
