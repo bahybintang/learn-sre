@@ -3,6 +3,7 @@ apiVersion: v1
 metadata:
   name: redis-service
 spec:
+  clusterIP: None
   selector:
     app: redis
   ports:
