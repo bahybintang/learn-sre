@@ -15,7 +15,6 @@ data "template_cloudinit_config" "build-config" {
 
   # Main cloud-config configuration file.
   part {
-    filename     = "build-init.cfg"
     content_type = "text/cloud-config"
     content      = data.template_file.build-init.rendered
   }
