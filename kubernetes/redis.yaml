@@ -1,11 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: redis
   labels:
     app: redis
 spec:
-  replicas: 1
+  serviceName: redis-service
+  replicas: 3
   selector:
     matchLabels:
       app: redis
@@ -17,5 +18,50 @@ spec:
       containers:
         - name: redis
           image: redis:latest
+          command: ["redis-server"]
+          args: ["/etc/redis.conf"]
+          env:
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
           ports:
-            - containerPort: 6379
+            - name: redis
+              containerPort: 6379
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: conf
+              mountPath: /etc/
+              subPath: redis.conf
+      initContainers:
+        - name: init-redis
+          image: redis:latest
+          command:
+            - bash
+            - "-c"
+            - |
+              set -ex
+              # Generate mysql server-id from pod ordinal index.
+              [[ `hostname` =~ -([0-9]+)$ ]] || exit 1
+              ordinal=${BASH_REMATCH[1]}
+              # Copy appropriate conf.d files from config-map to emptyDir.
+              if [[ $ordinal -eq 0 ]]; then
+                cp /mnt/config-map/master.conf /etc/redis.conf
+              else
+                cp /mnt/config-map/slave.conf /etc/redis.conf
+              fi
+          volumeMounts:
+            - name: conf
+              mountPath: /etc
+              subPath: redis.conf
+            - name: config-map
+              mountPath: /mnt/config-map
+      volumes:
+        - name: config-map
+          configMap:
+            name: redis
+        - name: conf
+          persistentVolumeClaim:
+            claimName: conf
+        - name: data
+          persistentVolumeClaim:
+            claimName: data
