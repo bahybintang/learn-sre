@@ -11,7 +11,7 @@ variable "DEFAULT_ZONE" {
 }
 
 variable "SSH_USER" {
-  default = "admin"
+  default = "ubuntu"
 }
 
 variable "DOCKER_USERNAME" {
