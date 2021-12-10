@@ -26,3 +26,6 @@ delete:
 	kubectl delete -f backend-ingress.yaml
 	kubectl delete -f frontend-ingress.yaml
 	kubectl delete -f backend-hpa.yaml
+cert:
+	kubectl apply -f issuer.yaml
+	kubectl apply -f certificate.yaml

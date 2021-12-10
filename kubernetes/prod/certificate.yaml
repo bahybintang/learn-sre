@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: learning-certificate
+  namespace: default
+spec:
+  secretName: skripsi-tls
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  dnsNames:
+    - "*.backend.rootshell.my.id"
+    - frontend.rootshell.my.id
