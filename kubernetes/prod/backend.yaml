@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: bintangbahy/skripsi-backend:latest
+          ports:
+            - containerPort: 5000
+          imagePullPolicy: Always
+          env:
+            - name: SECRET_KEY
+              value: "rCs2RMxzYw9z5IMUwLpnjg"
+            - name: REDIS_URL
+              value: "redis://redis-0.redis-service:6379"
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 300Mi
+            requests:
+              cpu: 300m
+              memory: 100Mi
