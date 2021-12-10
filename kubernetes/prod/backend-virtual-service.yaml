@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: backend-route
+spec:
+  hosts:
+    - "*.backend.rootshell.my.id"
+  gateways:
+    - learning-gateway
+  http:
+    - name: "backend-v1-routes"
+      match:
+        - uri:
+            prefix: "/"
+      route:
+        - destination:
+            host: backend-service.default.svc.cluster.local
+            port:
+              number: 1111

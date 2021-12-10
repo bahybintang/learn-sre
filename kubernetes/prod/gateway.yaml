@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: learning-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*.backend.rootshell.my.id"
+        - frontend.rootshell.my.id
+      tls:
+        httpsRedirect: true
+    - port:
+        number: 443
+        name: https-443
+        protocol: HTTPS
+      hosts:
+        - "*.backend.rootshell.my.id"
+        - frontend.rootshell.my.id
+      tls:
+        mode: SIMPLE
+        credentialName: skripsi-tls
