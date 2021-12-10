@@ -1,10 +1,11 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: frontend-ingress
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    cert-manager.io/issuer: "letsencrypt-staging"
 spec:
   tls:
     - hosts:
@@ -14,6 +15,10 @@ spec:
     - host: frontend.rootshell.my.id
       http:
         paths:
-          - backend:
-              serviceName: frontend-service
-              servicePort: 2222
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 2222
