@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: elasticsearch
+  namespace: default
+  labels:
+    app: elasticsearch
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: elasticsearch
+  labels:
+    app: elasticsearch
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - "services"
+      - "namespaces"
+      - "endpoints"
+    verbs:
+      - "get"
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: default
+  name: elasticsearch
+  labels:
+    app: elasticsearch
+subjects:
+  - kind: ServiceAccount
+    name: elasticsearch
+    namespace: default
+    apiGroup: ""
+roleRef:
+  kind: ClusterRole
+  name: elasticsearch
+  apiGroup: ""
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch
+  namespace: default
+  labels:
+    app: elasticsearch
+spec:
+  serviceName: elasticsearch
+  replicas: 2
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      serviceAccountName: elasticsearch
+      containers:
+        - image: elasticsearch:7.16.1
+          name: elasticsearch
+          ports:
+            - containerPort: 9200
+              name: db
+              protocol: TCP
+            - containerPort: 9300
+              name: transport
+              protocol: TCP
+          volumeMounts:
+            - name: elasticsearch
+              mountPath: /data
+          env:
+            - name: "NAMESPACE"
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+      volumes:
+        - name: elasticsearch
+          emptyDir: {}
+      # initContainers:
+      #   - image: alpine:3.6
+      #     command: ["/sbin/sysctl", "-w", "vm.max_map_count=262144"]
+      #     name: elasticsearch-init
+      #     securityContext:
+      #       privileged: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  namespace: default
+  labels:
+    app: elasticsearch
+spec:
+  ports:
+    - port: 9200
+      protocol: TCP
+      targetPort: db
+  selector:
+    app: elasticsearch

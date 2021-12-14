@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-pipeline
+data:
+  random-logger.conf: |
+    input {
+      beats {
+        port => 5044
+      }
+    }
+    filter {
+      grok {
+          match => { "message" => "%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:log_level} %{GREEDYDATA:message}" }
+      }
+    }
+    output {
+        elasticsearch {
+          hosts => ["elasticsearch-master:9200"]
+          index => "random-logger"
+        }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logstash
+spec:
+  selector:
+    matchLabels:
+      app: logstash
+  template:
+    metadata:
+      labels:
+        app: logstash
+    spec:
+      containers:
+        - name: logstash
+          ports:
+            - containerPort: 5044
+              name: filebeat
+            - containerPort: 9600
+              name: logstash
+          image: logstash:7.14.2
+          volumeMounts:
+            - name: pipeline
+              mountPath: /usr/share/logstash/pipeline/
+          command:
+            - logstash
+      volumes:
+        - name: pipeline
+          configMap:
+            name: logstash-pipeline
+            items:
+              - key: random-logger.conf
+                path: random-logger.conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: logstash-service
+  labels:
+    app: logstash-service
+spec:
+  selector:
+    app: logstash
+  ports:
+    - name: logstash
+      protocol: TCP
+      port: 9600
+      targetPort: 9600
+    - name: filebeat
+      protocol: TCP
+      port: 5044
+      targetPort: 5044

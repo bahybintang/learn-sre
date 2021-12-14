@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: random-logger
+  labels:
+    app: random-logger
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: random-logger
+  template:
+    metadata:
+      labels:
+        app: random-logger
+    spec:
+      containers:
+        - name: random-logger
+          image: chentex/random-logger
+          # Print logs every random(2000, 3000)ms
+          args: ["2000", "3000"]
