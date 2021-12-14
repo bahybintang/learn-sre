@@ -20,6 +20,23 @@ data:
           index => "random-logger"
         }
     }
+  httpd-logger.conf: |
+    input {
+      beats {
+        port => 5044
+      }
+    }
+    filter {
+      grok {
+          match => { "message" => "%{COMBINEDAPACHELOG}" }
+      }
+    }
+    output {
+        elasticsearch {
+          hosts => ["elasticsearch-master:9200"]
+          index => "httpd"
+        }
+    }
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -54,6 +71,8 @@ spec:
             items:
               - key: random-logger.conf
                 path: random-logger.conf
+              - key: httpd-logger.conf
+                path: httpd-logger.conf
 ---
 apiVersion: v1
 kind: Service

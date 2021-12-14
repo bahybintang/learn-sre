@@ -19,3 +19,10 @@ spec:
           image: chentex/random-logger
           # Print logs every random(2000, 3000)ms
           args: ["2000", "3000"]
+          resources:
+            limits:
+              cpu: 20m
+              memory: 20Mi
+            requests:
+              cpu: 10m
+              memory: 10Mi
