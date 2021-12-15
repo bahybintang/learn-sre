@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: filebeat
+  namespace: elastic-system
   labels:
     app: filebeat
 ---
@@ -9,6 +10,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: filebeat
+  namespace: elastic-system
   labels:
     app: filebeat
 rules:
@@ -25,10 +27,11 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: filebeat
+  namespace: elastic-system
 subjects:
   - kind: ServiceAccount
     name: filebeat
-    namespace: default
+    namespace: elastic-system
 
 roleRef:
   kind: ClusterRole
@@ -39,6 +42,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: filebeat-config
+  namespace: elastic-system
   labels:
     app: filebeat
 data:
@@ -60,6 +64,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: filebeat-prospectors
+  namespace: elastic-system
   labels:
     app: filebeat
 data:
@@ -75,6 +80,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: filebeat
+  namespace: elastic-system
   labels:
     app: filebeat
 spec:

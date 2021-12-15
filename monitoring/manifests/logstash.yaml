@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: logstash-pipeline
+  namespace: elastic-system
 data:
   random-logger.conf: |
     input {
@@ -42,6 +43,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: logstash
+  namespace: elastic-system
 spec:
   selector:
     matchLabels:
@@ -78,6 +80,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: logstash-service
+  namespace: elastic-system
   labels:
     app: logstash-service
 spec:
