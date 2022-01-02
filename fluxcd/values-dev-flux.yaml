@@ -1,0 +1,10 @@
+git:
+  pollInterval: 1m
+  url: ssh://git@github.com:bahybintang/learn-sre.git
+  branch: master
+  path: fluxcd/dev
+syncGarbageCollection:
+  enabled: true
+manifestGeneration: true
+additionalArgs:
+  - --git-sync-tag=flux-sync-prod
