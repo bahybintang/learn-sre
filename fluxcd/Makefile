@@ -1,3 +1,9 @@
 install:
-	helm repo add fluxcd https://charts.fluxcd.io
-	helm upgrade -i flux-dev fluxcd/flux --namespace flux --values values-dev-flux.yaml
+	flux bootstrap git --url=git@github.com/bahybintang/learn-sre.git --branch=master --path=fluxcd/dev
+installs:
+	flux bootstrap github \
+		--owner=bahybintang \
+		--repository=learn-sre \
+		--branch=master \
+		--path=./fluxcd/dev \
+		--personal
