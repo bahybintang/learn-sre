@@ -3,5 +3,5 @@ kind: Deployment
 metadata:
   annotations:
     flux.weave.works/automated: "true"
-  name: test
+  name: httpd
   namespace: dev
