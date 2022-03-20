@@ -24,6 +24,17 @@ inputs = {
       egress_with_cidr_blocks = [
         { from_port = -1, to_port = -1, protocol = "-1", description = "Allow all egress", cidr_blocks = "0.0.0.0/0" },
       ]
-    }
+    },
+    {
+      name = "dev-elb-sg"
+      vpc_id = dependency.vpc.outputs.vpc_id
+      ingress_with_cidr_blocks = [
+        { from_port = 80, to_port = 80, protocol = "tcp", description = "HTTP open", cidr_blocks = "0.0.0.0/0" },
+        { from_port = 443, to_port = 443, protocol = "tcp", description = "HTTPS open", cidr_blocks = "0.0.0.0/0" },
+      ]
+      egress_with_cidr_blocks = [
+        { from_port = -1, to_port = -1, protocol = "-1", description = "Allow all egress", cidr_blocks = "0.0.0.0/0" },
+      ]
+    },
   ]
 }

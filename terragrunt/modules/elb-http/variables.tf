@@ -25,3 +25,7 @@ variable "number_of_instances" {
 variable "instances" {
   type = list(string)
 }
+
+variable "acm_certificate_arn" {
+  type = string
+}

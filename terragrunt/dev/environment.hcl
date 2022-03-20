@@ -5,4 +5,5 @@ locals {
   }
   my_ip = "36.73.121.11"
   aws_region = "us-west-2"
+  root_domain = "rootshell.my.id"
 }

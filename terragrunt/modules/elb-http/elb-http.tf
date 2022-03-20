@@ -15,6 +15,13 @@ module "elb_http" {
       lb_port           = 80
       lb_protocol       = "HTTP"
     },
+    {
+      instance_port     = 80
+      instance_protocol = "HTTP"
+      lb_port           = 443
+      lb_protocol       = "HTTPS"
+      ssl_certificate_id = var.acm_certificate_arn
+    },
   ]
 
   health_check = {

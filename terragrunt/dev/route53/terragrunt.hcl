@@ -16,7 +16,7 @@ include {
 
 inputs = {
   environment_tags = local.environment_vars.locals.tags
-  zone = "rootshell.my.id"
+  zone = local.environment_vars.locals.root_domain
   record_name = ""
   record_type = "A"
   elb_dns_name = dependency.elb_http.outputs.elb_dns_name
