@@ -46,7 +46,7 @@ inputs = {
       instance_type = "t2.micro"
       key_name = dependency.key_pair.outputs.key_pair_key_name
       vpc_security_group_ids = dependency.security_group.outputs.security_group_id
-      subnet_id = dependency.vpc.outputs.private_subnets_ids[0]
+      subnet_id = dependency.vpc.outputs.private_subnets_ids[1]
       user_data = local.user_data
     },
   ]
