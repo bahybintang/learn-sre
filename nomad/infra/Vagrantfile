@@ -1,0 +1,42 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "bento/ubuntu-22.04" # 22.04 LTS, Jammy
+  config.vm.provision "shell", inline: "bash /vagrant/init.sh", privileged: false
+
+  config.vm.define "server" do |server|
+    server.vm.hostname = "nomad-server"
+    server.vm.network "private_network", ip: "192.168.69.1"
+    server.vm.synced_folder "./server/nomad.d", "/etc/nomad.d"
+    server.vm.network "forwarded_port", guest: 4646, host: 4646, auto_correct: true, host_ip: "127.0.0.1"
+  end
+
+  config.vm.define "client" do |client|
+    client.vm.hostname = "nomad-client"
+    client.vm.network "private_network", ip: "192.168.69.2"
+    client.vm.synced_folder "./client/nomad.d", "/etc/nomad.d"
+  end
+
+  # Increase memory for Libvirt
+  config.vm.provider "libvirt" do |libvirt|
+    libvirt.memory = 1024
+  end
+
+  # Increase memory for Parallels Desktop
+  config.vm.provider "parallels" do |p, o|
+    p.memory = "1024"
+  end
+
+  # Increase memory for Virtualbox
+  config.vm.provider "virtualbox" do |vb|
+        vb.memory = "1024"
+  end
+
+  # Increase memory for VMware
+  ["vmware_fusion", "vmware_workstation"].each do |p|
+    config.vm.provider p do |v|
+      v.vmx["memsize"] = "1024"
+    end
+  end
+end
