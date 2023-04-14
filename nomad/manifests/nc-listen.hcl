@@ -1,6 +1,8 @@
 job "docs" {
   datacenters = ["dc1"]
 
+  type = "service"
+
   group "example" {
     count = 3
 
@@ -8,6 +10,12 @@ job "docs" {
       port "http" {
         to = 5678
       }
+    }
+
+    service {
+      name = "nc-listen"
+      port = "http"
+      provider = "consul"
     }
 
     task "nc-listen" {

@@ -170,7 +170,7 @@ job "example" {
       name     = "redis-cache"
       tags     = ["global", "cache"]
       port     = "db"
-      provider = "nomad"
+      provider = "consul"
 
       # The "check" stanza instructs Nomad to create a Consul health check for
       # this service. A sample check is provided here for your convenience;
