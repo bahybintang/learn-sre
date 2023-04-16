@@ -1,20 +1,20 @@
-job "docs" {
+job "nc-listen" {
   datacenters = ["dc1"]
+  type        = "service"
 
-  type = "service"
-
-  group "example" {
+  group "nc-listen" {
     count = 3
 
     network {
       port "http" {
-        to = 5678
+        static = 5678
+        to     = 5678
       }
     }
 
     service {
-      name = "nc-listen"
-      port = "http"
+      name     = "nc-listen"
+      port     = "http"
       provider = "consul"
     }
 

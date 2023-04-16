@@ -1,4 +1,6 @@
-data_dir = "/opt/nomad/data"
+datacenter = "dc1"
+data_dir   = "/opt/nomad/data"
+bind_addr  = "{{ GetInterfaceIP \"eth1\" }}"
 
 server {
   enabled          = true
@@ -13,4 +15,8 @@ advertise {
 
 client {
   enabled = true
+}
+
+consul {
+  address = "{{ GetInterfaceIP \"eth1\" }}:8500"
 }

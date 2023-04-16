@@ -42,7 +42,7 @@ sudo systemctl start consul
 (
 cat <<-EOF
   [Resolve]
-  DNS=127.0.0.1
+  DNS=$(ip -4 -o addr show eth1 | awk '{print $4}' | cut -d "/" -f 1)
   DNSStubListener=no
 EOF
 ) | sudo tee /etc/systemd/resolved.conf

@@ -7,23 +7,23 @@ Vagrant.configure(2) do |config|
 
   config.vm.define "server" do |server|
     server.vm.hostname = "nomad-server"
-    server.vm.network :private_network, ip: "192.168.69.2"
+    server.vm.network :private_network, ip: "192.168.69.2", virtualbox__intnet: "test-network"
     server.vm.synced_folder "./server/nomad.d", "/etc/nomad.d"
     server.vm.synced_folder "./server/consul.d", "/etc/consul.d"
-    server.vm.network "forwarded_port", guest: 4646, host: 4646, auto_correct: true, host_ip: "127.0.0.1"
-    server.vm.network "forwarded_port", guest: 8500, host: 8500, auto_correct: true, host_ip: "127.0.0.1"
+    server.vm.network "forwarded_port", guest: 4646, host: 4646, auto_correct: true, host_ip: "127.0.0.1", guest_ip: "192.168.69.2"
+    server.vm.network "forwarded_port", guest: 8500, host: 8500, auto_correct: true, host_ip: "127.0.0.1", guest_ip: "192.168.69.2"
   end
 
   config.vm.define "client" do |client|
     client.vm.hostname = "nomad-client"
-    client.vm.network :private_network, ip: "192.168.69.3"
+    client.vm.network :private_network, ip: "192.168.69.3", virtualbox__intnet: "test-network"
     client.vm.synced_folder "./client/nomad.d", "/etc/nomad.d"
     client.vm.synced_folder "./client/consul.d", "/etc/consul.d"
   end
 
   config.vm.define "client2" do |client2|
     client2.vm.hostname = "nomad-client-2"
-    client2.vm.network :private_network, ip: "192.168.69.4"
+    client2.vm.network :private_network, ip: "192.168.69.4", virtualbox__intnet: "test-network"
     client2.vm.synced_folder "./client/nomad.d", "/etc/nomad.d"
     client2.vm.synced_folder "./client/consul.d", "/etc/consul.d"
   end
@@ -40,6 +40,7 @@ Vagrant.configure(2) do |config|
 
   # Increase memory for Virtualbox
   config.vm.provider "virtualbox" do |vb|
+        vb.customize ["modifyvm", :id, "--natnet1", "10.3/16"]
         vb.memory = "1024"
   end
 

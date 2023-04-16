@@ -1,6 +1,6 @@
 data_dir = "/opt/consul/data"
 bind_addr = "{{ GetInterfaceIP \"eth1\" }}"
-client_addr = "0.0.0.0"
+client_addr = "{{ GetInterfaceIP \"eth1\" }}"
 advertise_addr = "{{ GetInterfaceIP \"eth1\" }}"
 
 bootstrap_expect = 1
