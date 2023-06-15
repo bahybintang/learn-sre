@@ -1,3 +1,6 @@
+kind create cluster --config alliance-sector-01-kind-config.yaml
+kind create cluster --config alliance-sector-02-kind-config.yaml
+
 export CLUSTER1=kind-alliance-sector-01
 export CLUSTER2=kind-alliance-sector-02
 
